@@ -1,0 +1,21 @@
+{
+  "name": "eveMarketBrowser",
+  "version": "0.0.0",
+  "homepage": "https://github.com/OrthoLoess/eveMarketBrowser",
+  "authors": [
+    "Ed Landamore <outrider@f2s.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
