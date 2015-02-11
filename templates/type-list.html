@@ -1,3 +1,26 @@
-<ul>
-    <li ng-repeat="type in typeList.types">{{type.name}}</li>
+<ul ng-if="loggedIn">
+    <li ng-repeat="key in typeList.types | groupsFilter : null">
+        <span ng-click="show = !show">{{key.name}}</span>
+        <ul ng-if="show" >
+            <li ng-repeat="child in typeList.types | groupsFilter : key">
+                <span ng-click="show2 = !show2">{{child.name}}</span>
+                <ul ng-if="hasChildren(child) && show2">
+                    <li ng-repeat="child2 in typeList.types | groupsFilter : child">
+                        {{child2.name}}
+                        <ul ng-if="hasChildren(child2)">
+                            <li ng-repeat="child3 in typeList.types | groupsFilter : child2">
+                                {{child3.name}}
+                                <ul ng-if="hasChildren(child3)">
+                                    <li ng-repeat="child4 in typeList.types | groupsFilter : child3">
+                                        {{child4.name}}
+
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
 </ul>
