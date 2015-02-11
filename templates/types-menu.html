@@ -1,0 +1,7 @@
+<ul ng-if="loggedIn">
+    <li ng-repeat="child in findChildrenOf(null)">
+        {{child.name}}
+        <types-sub-menu parent="child" ng-if="hasChildren(child)">
+        </types-sub-menu>
+    </li>
+</ul>

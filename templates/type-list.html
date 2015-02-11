@@ -4,15 +4,26 @@
         <ul ng-if="show" >
             <li ng-repeat="child in typeList.types | groupsFilter : key">
                 <span ng-click="show2 = !show2">{{child.name}}</span>
+
+                <item-list group="child" ng-if="!hasChildren(child) && show2"></item-list>
+
                 <ul ng-if="hasChildren(child) && show2">
                     <li ng-repeat="child2 in typeList.types | groupsFilter : child">
-                        {{child2.name}}
-                        <ul ng-if="hasChildren(child2)">
+                        <span ng-click="show3 = !show3">{{child2.name}}</span>
+
+                        <item-list group="child2" ng-if="!hasChildren(child2) && show3"></item-list>
+
+                        <ul ng-if="hasChildren(child2) && show3">
                             <li ng-repeat="child3 in typeList.types | groupsFilter : child2">
-                                {{child3.name}}
-                                <ul ng-if="hasChildren(child3)">
+                                <span ng-click="show4 = !show4">{{child3.name}}</span>
+
+                                <item-list group="child3" ng-if="!hasChildren(child3) && show4"></item-list>
+
+                                <ul ng-if="hasChildren(child3) && show4">
                                     <li ng-repeat="child4 in typeList.types | groupsFilter : child3">
-                                        {{child4.name}}
+                                        <span ng-click="show5 = !show5">{{child4.name}}</span>
+
+                                        <item-list group="child4" ng-if="!hasChildren(child4) && show5"></item-list>
 
                                     </li>
                                 </ul>

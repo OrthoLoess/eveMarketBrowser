@@ -17,6 +17,7 @@ app.directive('doLogin', ['$rootScope', function($rootScope){
         controllerAs: 'doLogin'
     };
 }]);
+
 app.directive('typeList', [function(){
     return {
         restrict: 'E',
@@ -61,25 +62,103 @@ app.directive('typeList', [function(){
 
                 crest.walkLink(endpoints.marketGroups.href).then(function(groups){
                     browser.types = groups.items;//browser.findChildrenOf(null ,groups.items);
+                    crest.groups = groups.items;
                 });
             });
-            //this.test = crest.getSSO();
 
-            //this.types = [];
-
-
-            /*$http.get('https://public-crest.eveonline.com/market/groups/').success(function(data){
-                for (var i= 0; i < data.items.length; i++){
-                    if (!data.items[i].hasOwnProperty('parentGroup')){
-                        browser.types.push(data.items[i]);
-                    }
-                }
-            });*/
         }],
         controllerAs: 'typeList'
     };
 }]);
+app.directive('itemList', [function(){
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/item-list.html',
+        scope: {group: '=group'},
+        controller: ['crest', '$scope', function(crest, $scope){
+            $scope.items = [];
+            if($scope.group.types === undefined){
+                return;
+            }
+            crest.walkLink($scope.group.types.href).then(function(items){
+                $scope.items = items.items;
+            });
+        }],
+        controllerAs: 'itemList'
+    };
+}]);
 
+/*
+app.directive('typesMenu', function(){
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/types-menu.html',
+        controller: ['$scope', 'typesService', function($scope, typesService){
+            this.groups = typesService.groups;
+            $scope.hasChildren = typesService.hasChildren;
+            $scope.findChildrenOf = typesService.findChildrenOf;
+            if($scope.loggedIn){
+                typesService.populateGroups().then(function(){
+                    this.groups = typesService.groups;
+                });
+            }
+        }],
+        controllerAs: 'typesMenu'
+    };
+});
+app.directive('typesSubMenu', function(){
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/types-sub-menu.html',
+        scope: { parent: '=parent' },
+        controller: ['$scope', 'typesService', function($scope, typesService){
+            this.groups = typesService.groups;
+            $scope.hasChildren = typesService.hasChildren;
+            $scope.findChildrenOf = typesService.findChildrenOf;
+        }],
+        controllerAs: 'typesSubMenu'
+    };
+});
+
+app.service('typesService', ['crest' , function(crest){
+    var typesService = this;
+    this.groups = [];
+    this.hasChildren = function(parent){
+        var groups = typesService.groups;
+        for(var i = 0; i < groups.length; i++){
+            if(groups[i].hasOwnProperty('parentGroup') && groups[i].parentGroup.href === parent.href){
+                return true;
+            }
+        }
+        return false;
+    };
+    this.findChildrenOf = function(parent){
+        var children = [];
+        var i;
+        if(parent === null){
+            for (i = 0; i < typesService.groups.length; i++){
+                if (!typesService.groups[i].hasOwnProperty('parentGroup')){
+                    children.push(typesService.groups[i]);
+                }
+            }
+        } else {
+            for (i = 0; i < typesService.groups.length; i++){
+                if (typesService.groups[i].hasOwnProperty('parentGroup') && typesService.groups[i].parentGroup.href === parent.href){
+                    children.push(typesService.groups[i]);
+                }
+            }
+        }
+        return children;
+    };
+    this.populateGroups = function() {
+        return crest.getEndpoints().then(function (endpoints) {
+            crest.walkLink(endpoints.marketGroups.href).then(function (groups) {
+                typesService.groups = groups.items;
+            });
+        });
+    };
+}]);
+*/
 app.service('crest', ["ssoLogin", "$http", "$q", "$rootScope",
                       function(ssoLogin, $http, $q, $rootScope)
 {

@@ -1,0 +1,9 @@
+<ul>
+    <li ng-repeat="child in findChildrenOf(parent)">
+        {{child.name}}
+<div ng-if="hasChildren(child)">
+        <types-sub-menu parent="child" ng-if="hasChildren(child)">
+        </types-sub-menu>
+</div>
+    </li>
+</ul>
