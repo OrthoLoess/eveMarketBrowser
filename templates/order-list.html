@@ -1,0 +1,22 @@
+<div ng-if="loggedIn" id="ordersTable">
+    <div ng-if="regionSelector.region === null">Select a region to see orders!</div>
+    <table ng-if="regionSelector.region !== null" class="table table-condensed table-striped" id="sellOrders">
+        <tr>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Location</th>
+        </tr>
+        <tr ng-repeat="sellOrder in sellOrders">
+            <td>{{sellOrder.volume}}</td>
+            <td>{{sellOrder.price | currency : 'ISK '}}</td>
+            <td>{{sellOrder.location.name}}</td>
+        </tr>
+    </table>
+    <table ng-if="regionSelector.region !== null" class="table table-condensed table-striped" id="buyOrders">
+        <tr ng-repeat="buyOrder in buyOrders">
+            <td>{{buyOrder.volume}}</td>
+            <td>{{buyOrder.price | currency : 'ISK '}}</td>
+            <td>{{buyOrder.location.name}}</td>
+        </tr>
+    </table>
+</div>

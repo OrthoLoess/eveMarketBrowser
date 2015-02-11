@@ -1,4 +1,4 @@
-<ul ng-if="loggedIn">
+<ul ng-if="loggedIn" id="marketGroupsList">
     <li ng-repeat="key in typeList.types | groupsFilter : null">
         <span ng-click="show = !show">{{key.name}}</span>
         <ul ng-if="show" >

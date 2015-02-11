@@ -1,5 +1,5 @@
 <ul>
-    <li ng-repeat="item in items">
+    <li ng-repeat="item in items" ng-click="itemList.selectItem(item)" class="marketType">
         {{item.type.name}}
     </li>
 </ul>

@@ -17,7 +17,6 @@ app.directive('doLogin', ['$rootScope', function($rootScope){
         controllerAs: 'doLogin'
     };
 }]);
-
 app.directive('typeList', [function(){
     return {
         restrict: 'E',
@@ -75,7 +74,7 @@ app.directive('itemList', [function(){
         restrict: 'E',
         templateUrl: '/templates/item-list.html',
         scope: {group: '=group'},
-        controller: ['crest', '$scope', function(crest, $scope){
+        controller: ['crest', '$scope', '$rootScope', function(crest, $scope, $rootScope){
             $scope.items = [];
             if($scope.group.types === undefined){
                 return;
@@ -83,8 +82,57 @@ app.directive('itemList', [function(){
             crest.walkLink($scope.group.types.href).then(function(items){
                 $scope.items = items.items;
             });
+            this.selectItem = function(item){
+                //console.log(item);
+                $rootScope.selectedItem = item;
+                $rootScope.$broadcast('itemSelected');
+            };
         }],
         controllerAs: 'itemList'
+    };
+}]);
+app.directive('regionSelector', [function(){
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/region-selector.html',
+        controller: ['crest', '$scope', '$rootScope', function(crest, $scope, $rootScope){
+            $scope.regions = [];
+            $rootScope.regionSelector = {
+                region: null
+            };
+            $rootScope.$on('doneLoadingCrest', function(){
+                if(crest.regions === undefined) {
+                    crest.walkLink(crest.endpoints.regions.href).then(function (regionList) {
+                        $scope.regions = regionList.items;
+                        crest.regions = regionList.items;
+                    });
+                } else {
+                    $scope.regions = crest.regions;
+                }
+            });
+        }],
+        controllerAs: 'regionSelector'
+    };
+}]);
+app.directive('orderList', [function(){
+    return {
+        restrict: 'E',
+        templateUrl: '/templates/order-list.html',
+        controller: ['crest', '$scope', '$rootScope', function(crest, $scope, $rootScope){
+            $scope.sellOrders = [];
+            $scope.buyOrders = [];
+            $rootScope.$on('itemSelected', function(){
+                crest.walkLink($rootScope.regionSelector.region.href).then(function(regionData){  //$rootScope.selectedItem.type.href
+                    crest.walkLink(regionData.marketBuyOrders.href + "?type=" + $rootScope.selectedItem.type.href).then(function(buyOrders){
+                        $scope.buyOrders = buyOrders.items;
+                    });
+                    crest.walkLink(regionData.marketSellOrders.href + "?type=" + $rootScope.selectedItem.type.href).then(function(sellOrders){
+                        $scope.sellOrders = sellOrders.items;
+                    });
+                });
+            });
+        }],
+        controllerAs: 'orderList'
     };
 }]);
 
@@ -179,6 +227,7 @@ app.service('crest', ["ssoLogin", "$http", "$q", "$rootScope",
             this.endpoints = {'crestEndpoint': {'href': crestRoot}};
             return this.makeRequest('crestEndpoint').then(function(result){
                 crestService.endpoints = result;
+                $rootScope.$broadcast('doneLoadingCrest');
                 return crestService.endpoints;
             });
         } else {
@@ -198,7 +247,6 @@ app.service('crest', ["ssoLogin", "$http", "$q", "$rootScope",
         }).success(function(data) {
             deferred.resolve(data);
         });
-        $rootScope.$broadcast('doneLoadingCrest');
         return deferred.promise;
     };
     this.walkLink = function(url){
@@ -226,7 +274,6 @@ app.service('crest', ["ssoLogin", "$http", "$q", "$rootScope",
         return deferred.promise;
     };
 }]);
-
 app.service('ssoLogin', ['$http', '$location', '$window', "$cookies", function($http, $location, $window, $cookies){
     this.appID = '9eb22daedab143c5a9a31bf63b72da9d';
     this.callbackURL = "http://localhost:8000/";

@@ -1,0 +1,80 @@
+#marketGroupsList,
+#marketGroupsList ul,
+#marketGroupsList li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #eeeeee;
+}
+#marketGroupsList li {
+    padding-left: 0.5em;
+}
+#marketGroupsList .marketType {
+    background-color: #d7dbe0;
+}
+
+/*
+#marketGroupsList li {
+    background-color: #e8e3bd;
+}
+
+#marketGroupsList li span {
+    padding-left: 0.5em;
+}
+
+#marketGroupsList5 li li {
+    background-color: #d9ddcf;
+}
+
+#marketGroupsList li li span {
+    padding-left: 1em;
+}
+
+#marketGroupsList5 li li li {
+    background-color: #e8e3bd;
+}
+
+#marketGroupsList li li li span {
+    padding-left: 1.5em;
+}
+
+#marketGroupsList5 li li li li {
+    background-color: #d9ddcf;
+}
+
+#marketGroupsList li li li li span {
+    padding-left: 2em;
+}
+
+#marketGroupsList5 li li li li li {
+    background-color: #e8e3bd;
+}
+
+#marketGroupsList li li li li li span {
+    padding-left: 2.5em;
+}
+
+#marketGroupsList5 li li li li li li {
+    background-color: #d9ddcf;
+}
+
+#marketGroupsList li li li li li li span {
+    padding-left: 3em;
+}
+
+#marketGroupsList5 li li li li li li li {
+    background-color: #e8e3bd;
+}
+
+#marketGroupsList li li li li li li li span {
+    padding-left: 3.5em;
+}
+
+#marketGroupsList .marketType {
+    background-color: #E0F1F4;
+}
+
+#marketGroupsList .marketType {
+    padding-left: 3.5em;
+}
+*/
